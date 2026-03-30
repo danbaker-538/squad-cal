@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FFFBF0;
+  --foreground: #2D1B4E;
+  --accent: #E8457C;
+  --accent-light: #F472B6;
+  --card: #FFFFFF;
+  --card-border: #E8D5F5;
+  --going: #16A34A;
+  --maybe: #D97706;
+  --not-going: #DC2626;
+  --gradient-start: #FDE68A;
+  --gradient-mid: #FECDD3;
+  --gradient-end: #C4B5FD;
+  --warm-orange: #FB923C;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-card: var(--card);
+  --color-card-border: var(--card-border);
+  --color-going: var(--going);
+  --color-maybe: var(--maybe);
+  --color-not-going: var(--not-going);
+  --color-gradient-start: var(--gradient-start);
+  --color-gradient-mid: var(--gradient-mid);
+  --color-gradient-end: var(--gradient-end);
+  --color-warm-orange: var(--warm-orange);
+  --font-sans: var(--font-nunito);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+body {
+  background: linear-gradient(160deg, var(--gradient-start) 0%, var(--background) 25%, var(--background) 60%, var(--gradient-mid) 85%, var(--gradient-end) 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Fun animated gradient for accent elements */
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #E8457C, #FB923C, #E8457C);
+  background-size: 200% 200%;
+  animation: shimmer 3s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-spring {
+  background: white;
+  border: 1px solid var(--card-border);
+  border-radius: 1.25rem;
+  box-shadow: 0 1px 3px rgba(232, 213, 245, 0.3), 0 4px 12px rgba(232, 213, 245, 0.1);
 }
