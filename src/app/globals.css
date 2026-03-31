@@ -58,6 +58,29 @@ body {
   background-clip: text;
 }
 
+/* Falling photos animation */
+@keyframes fall {
+  0% {
+    transform: translateY(-120px);
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(105vh);
+    opacity: 0;
+  }
+}
+
+.animate-fall {
+  animation: fall linear infinite;
+  opacity: 0;
+}
+
 .card-spring {
   background: white;
   border: 1px solid var(--card-border);

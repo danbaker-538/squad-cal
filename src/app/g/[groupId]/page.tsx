@@ -7,6 +7,8 @@ import { PdaLogo } from "@/app/components/pda-logo";
 import { EventViews } from "./event-views";
 import { SideMenu } from "./side-menu";
 import { getMyGroups } from "@/app/actions";
+import { FallingPhotos } from "@/app/components/falling-photos";
+import { getFriendPhotos } from "@/lib/photos";
 
 export default async function GroupPage({
   params,
@@ -60,9 +62,11 @@ export default async function GroupPage({
   const level = getLevel(member.xp);
   const progress = getXpForNextLevel(member.xp);
   const inviteUrl = `/join/${group.invite_code}`;
+  const photos = getFriendPhotos();
 
   return (
-    <main className="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 pb-8">
+    <main className="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 pb-8 relative">
+      {photos.length > 0 && <FallingPhotos photos={photos} />}
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">

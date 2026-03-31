@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { CreateGroupForm } from "./create-group-form";
 import { LoginWithCodeForm } from "./login-with-code-form";
 import { PdaLogo } from "./components/pda-logo";
+import { FallingPhotos } from "./components/falling-photos";
+import { getFriendPhotos } from "@/lib/photos";
 
 export default async function Home({
   searchParams,
@@ -20,8 +22,11 @@ export default async function Home({
     redirect(`/g/${groupId}`);
   }
 
+  const photos = getFriendPhotos();
+
   return (
-    <main className="flex-1 flex items-center justify-center p-4">
+    <main className="flex-1 flex items-center justify-center p-4 relative">
+      {photos.length > 0 && <FallingPhotos photos={photos} />}
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
           <PdaLogo size="lg" />
