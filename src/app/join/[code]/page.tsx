@@ -1,5 +1,26 @@
 import { createClient } from "@/lib/supabase-server";
 import { JoinForm } from "./join-form";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ code: string }>;
+}): Promise<Metadata> {
+  const { code } = await params;
+  const supabase = await createClient();
+  const { data: group } = await supabase
+    .from("groups")
+    .select("name")
+    .eq("invite_code", code.toLowerCase())
+    .single();
+
+  const name = group?.name ?? "a group";
+  return {
+    title: `Join ${name} — PDcAlendar`,
+    description: `You've been invited to ${name}! Tap to join the squad on PDcAlendar 🌸`,
+  };
+}
 
 export default async function JoinPage({
   params,
