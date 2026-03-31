@@ -3,6 +3,7 @@ import { getMemberId, getGroupId } from "@/lib/member";
 import { redirect } from "next/navigation";
 import { RsvpButtons } from "../../rsvp-buttons";
 import { DeleteEventButton } from "./delete-event-button";
+import { LocalDate, LocalTime } from "@/app/components/local-time";
 
 export default async function EventDetailPage({
   params,
@@ -35,8 +36,6 @@ export default async function EventDetailPage({
     redirect(`/g/${groupId}`);
   }
 
-  const start = new Date(event.start_time);
-  const end = event.end_time ? new Date(event.end_time) : null;
   const myRsvp = rsvps?.find(
     (r: { member_id: string }) => r.member_id === memberId
   );
@@ -66,24 +65,12 @@ export default async function EventDetailPage({
           <div className="flex items-center gap-3">
             <span className="text-foreground/40 w-14 font-semibold">When</span>
             <span className="font-medium">
-              {start.toLocaleDateString("en-US", {
-                weekday: "long",
-                month: "long",
-                day: "numeric",
-              })}{" "}
-              at{" "}
-              {start.toLocaleTimeString("en-US", {
-                hour: "numeric",
-                minute: "2-digit",
-              })}
-              {end && (
+              <LocalDate iso={event.start_time} />{" "}
+              at <LocalTime iso={event.start_time} />
+              {event.end_time && (
                 <>
-                  {" "}
-                  &ndash;{" "}
-                  {end.toLocaleTimeString("en-US", {
-                    hour: "numeric",
-                    minute: "2-digit",
-                  })}
+                  {" "}&ndash;{" "}
+                  <LocalTime iso={event.end_time} />
                 </>
               )}
             </span>
