@@ -15,6 +15,15 @@ function generateInviteCode(): string {
   return code;
 }
 
+function generateRecoveryCode(): string {
+  const chars = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for (let i = 0; i < 4; i++) {
+    code += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return `PDA-${code}`;
+}
+
 // ---- Group Actions ----
 
 export async function createGroup(_prevState: { error: string } | null, formData: FormData) {
@@ -40,7 +49,7 @@ export async function createGroup(_prevState: { error: string } | null, formData
 
   const { data: member, error: memberError } = await supabase
     .from("members")
-    .insert({ group_id: group.id, display_name: displayName.trim() })
+    .insert({ group_id: group.id, display_name: displayName.trim(), recovery_code: generateRecoveryCode() })
     .select()
     .single();
 
@@ -90,7 +99,7 @@ export async function joinGroup(_prevState: { error: string } | null, formData: 
 
   const { data: member, error: memberError } = await supabase
     .from("members")
-    .insert({ group_id: group.id, display_name: displayName.trim() })
+    .insert({ group_id: group.id, display_name: displayName.trim(), recovery_code: generateRecoveryCode() })
     .select()
     .single();
 
@@ -100,6 +109,29 @@ export async function joinGroup(_prevState: { error: string } | null, formData: 
 
   await setMemberCookies(member.id, group.id);
   redirect(`/g/${group.id}`);
+}
+
+export async function loginWithCode(_prevState: { error: string } | null, formData: FormData) {
+  const code = (formData.get("code") as string)?.trim().toUpperCase();
+
+  if (!code) {
+    return { error: "Please enter your recovery code." };
+  }
+
+  const supabase = await createClient();
+
+  const { data: member, error } = await supabase
+    .from("members")
+    .select("id, group_id")
+    .eq("recovery_code", code)
+    .single();
+
+  if (error || !member) {
+    return { error: "Invalid code. Check it and try again." };
+  }
+
+  await setMemberCookies(member.id, member.group_id);
+  redirect(`/g/${member.group_id}`);
 }
 
 export async function switchGroup(memberId: string, groupId: string) {

@@ -95,6 +95,7 @@ export default async function GroupPage({
               display_name: m.display_name,
               xp: m.xp,
             }))}
+            recoveryCode={member.recovery_code ?? ""}
           />
         </div>
       </div>

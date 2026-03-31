@@ -22,15 +22,18 @@ export function SideMenu({
   currentGroupName,
   myGroups,
   members,
+  recoveryCode,
 }: {
   inviteUrl: string;
   currentGroupId: string;
   currentGroupName: string;
   myGroups: GroupInfo[];
   members: MemberInfo[];
+  recoveryCode: string;
 }) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [codeCopied, setCodeCopied] = useState(false);
   const [isPending, startTransition] = useTransition();
 
   const otherGroups = myGroups.filter((g) => g.group_id !== currentGroupId);
@@ -102,6 +105,25 @@ export function SideMenu({
                 {copied ? "Copied!" : "Copy"}
               </button>
             </div>
+          </div>
+
+          {/* Recovery Code */}
+          <div className="mb-6">
+            <p className="text-xs font-semibold text-foreground/40 uppercase tracking-wider mb-2">Your Recovery Code</p>
+            <div className="card-spring p-3 flex items-center justify-between gap-2">
+              <code className="text-sm font-mono font-bold text-foreground tracking-wider">{recoveryCode}</code>
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(recoveryCode);
+                  setCodeCopied(true);
+                  setTimeout(() => setCodeCopied(false), 2000);
+                }}
+                className="text-xs px-3 py-1.5 bg-accent/10 text-accent font-semibold rounded-lg hover:bg-accent/20 transition-colors shrink-0"
+              >
+                {codeCopied ? "Saved!" : "Copy"}
+              </button>
+            </div>
+            <p className="text-xs text-foreground/40 mt-1.5">Save this to log back in on any device</p>
           </div>
 
           {/* Members */}

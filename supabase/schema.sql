@@ -20,6 +20,7 @@ create table members (
   group_id uuid references groups(id) on delete cascade not null,
   display_name text not null,
   xp integer default 0 not null,
+  recovery_code text unique not null,
   push_subscription jsonb,
   joined_at timestamptz default now()
 );

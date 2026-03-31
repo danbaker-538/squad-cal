@@ -1,6 +1,7 @@
 import { getMemberId, getGroupId } from "@/lib/member";
 import { redirect } from "next/navigation";
 import { CreateGroupForm } from "./create-group-form";
+import { LoginWithCodeForm } from "./login-with-code-form";
 import { PdaLogo } from "./components/pda-logo";
 
 export default async function Home({
@@ -35,12 +36,22 @@ export default async function Home({
           </div>
 
           {!isNewGroup && (
-            <div className="border-t border-card-border pt-6">
-              <h2 className="text-lg font-bold mb-2">Have an invite link?</h2>
-              <p className="text-sm text-foreground/50">
-                Just open the link your friend sent you and you&apos;re in.
-              </p>
-            </div>
+            <>
+              <div className="border-t border-card-border pt-6">
+                <h2 className="text-lg font-bold mb-2">Have an invite link?</h2>
+                <p className="text-sm text-foreground/50">
+                  Just open the link your friend sent you and you&apos;re in.
+                </p>
+              </div>
+
+              <div className="border-t border-card-border pt-6">
+                <h2 className="text-lg font-bold mb-2">Log back in</h2>
+                <p className="text-sm text-foreground/50 mb-3">
+                  Enter your recovery code to get back into your group.
+                </p>
+                <LoginWithCodeForm />
+              </div>
+            </>
           )}
         </div>
       </div>
